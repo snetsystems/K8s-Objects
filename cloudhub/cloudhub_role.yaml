@@ -1,0 +1,53 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: cloudhub
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: cloudhub
+  namespace: cloudhub
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: snetsystems:cluster:viewer
+  labels:
+    rbac.authorization.k8s.io/aggregate-view-cloudhub: "true"
+rules:
+  - verbs:
+      - get
+      - list
+    apiGroups:
+      - ''
+    resources:
+      - persistentvolumes
+      - nodes
+      - nodes/stats
+      - nodes/proxy
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: snetsystems:cloudhub
+aggregationRule:
+  clusterRoleSelectors:
+    - matchLabels:
+        rbac.authorization.k8s.io/aggregate-view-cloudhub: "true"
+    - matchLabels:
+        rbac.authorization.k8s.io/aggregate-to-view: "true"
+rules: [] # Rules are automatically filled in by the controller manager.
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: snetsystems:cloudhub:viewer
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: snetsystems:cloudhub
+subjects:
+  - kind: ServiceAccount
+    name: cloudhub
+    namespace: cloudhub

@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  labels:
+    app: netbox
+  name: netbox
+  namespace: kube-system
+spec:
+  selector:
+    matchLabels:
+      app: netbox
+  updateStrategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: netbox
+    spec:
+      serviceAccountName: metrics-server
+      serviceAccount: metrics-server
+      containers:
+      - image: quay.io/gravitational/netbox:latest
+        imagePullPolicy: Always
+        name: netbox
+      securityContext:
+        runAsUser: 0
+      terminationGracePeriodSeconds: 30
+      #nodeSelector:
+      #  type: other      
+      tolerations:
+      - key: node-role.kubernetes.io/master
+        effect: NoSchedule

@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  labels:
+    app: telnet
+  name: telnet
+  namespace: kube-system
+spec:
+  selector:
+    matchLabels:
+      app: telnet
+  updateStrategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: telnet
+    spec:
+      serviceAccountName: metrics-server
+      serviceAccount: metrics-server
+      containers:
+      - image: mikesplain/telnet
+        imagePullPolicy: Always
+        name: telnet
+      securityContext:
+        runAsUser: 0
+      terminationGracePeriodSeconds: 30
+      tolerations:
+      - key: node-role.kubernetes.io/master
+        effect: NoSchedule
