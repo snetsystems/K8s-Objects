@@ -9,5 +9,5 @@ spec:
       containers:
       - name: hello
         image: busybox
-        command: ['sh', '-c', 'echo "Hello, Kubernetes!" && sleep 60']
+        command: ['sh', '-c', 'echo "Hello, Kubernetes, I am jack!" && sleep 60']
       restartPolicy: OnFailure
