@@ -104,7 +104,7 @@ spec:
       nodeSelector:
         kubernetes.io/os: linux
         kubernetes.io/arch: "amd64"
-        kubernetes.io/hostname: k8s-01
+        kubernetes.io/hostname: k8s-master01
       tolerations:
         - key: node-role.kubernetes.io/master
           effect: NoSchedule

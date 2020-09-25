@@ -228,7 +228,7 @@ spec:
       serviceAccountName: kubernetes-dashboard
       nodeSelector:
         "kubernetes.io/os": linux
-        "kubernetes.io/hostname": k8s-01
+        "kubernetes.io/hostname": k8s-master01
       # Comment the following tolerations if Dashboard must not be deployed on master
       tolerations:
         - key: node-role.kubernetes.io/master
@@ -296,7 +296,7 @@ spec:
       serviceAccountName: kubernetes-dashboard
       nodeSelector:
         "kubernetes.io/os": linux
-        "kubernetes.io/hostname": k8s-01
+        "kubernetes.io/hostname": k8s-master01
       # Comment the following tolerations if Dashboard must not be deployed on master
       tolerations:
         - key: node-role.kubernetes.io/master
