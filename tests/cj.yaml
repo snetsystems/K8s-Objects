@@ -4,7 +4,7 @@ metadata:
   name: cronjob-test
   namespace: cloudhub
 spec:
-  schedule: "*/1 * * * *"
+  schedule: "0 */2 * * *"
   jobTemplate:
     spec:
       template:
