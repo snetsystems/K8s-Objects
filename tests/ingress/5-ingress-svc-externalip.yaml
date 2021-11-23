@@ -12,7 +12,6 @@ metadata:
   name: ingress-nginx-controller
   namespace: ingress-nginx
 spec:
-  type: NodePort
   ports:
     - name: http
       port: 80
