@@ -15,6 +15,7 @@ spec:
         app: telegraf
     spec:
       hostNetwork: true
+      serviceAccountName: cloudhub
       containers:
         - image: snetsystems/telegraf:1.23.4-snet-2
           name: telegraf
@@ -37,3 +38,5 @@ spec:
         - name: telegraf-config-volume
           configMap:
             name: telegraf-config
+      tolerations:
+      - operator: Exists
