@@ -37,7 +37,7 @@ spec:
       targetPort: 80
       nodePort: 30037
   externalIPs:
-    - 61.250.122.245
+    - 10.20.2.231
 ---
 apiVersion: v1
 kind: Service
