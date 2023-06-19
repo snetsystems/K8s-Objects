@@ -40,8 +40,10 @@ spec:
   ports:
     - port: 443
       targetPort: 8443
+      nodePort: 30000
   selector:
     k8s-app: kubernetes-dashboard
+  type: NodePort
 
 ---
 
@@ -198,8 +200,9 @@ spec:
           args:
             - --auto-generate-certificates
             - --namespace=kubernetes-dashboard
-            - --enable-skip-login
-            - --disable-settings-authorizer
+            - --token-ttl=7776000
+            #- --enable-skip-login
+            #- --disable-settings-authorizer
             # Uncomment the following line to manually specify Kubernetes API server Host
             # If not specified, Dashboard will attempt to auto discover the API server and connect
             # to it. Uncomment only if the default does not work.
@@ -231,11 +234,11 @@ spec:
       serviceAccountName: kubernetes-dashboard
       nodeSelector:
         "kubernetes.io/os": linux
-        "kubernetes.io/hostname": k8s-master-centos8.snetsystems.com
+      #  "kubernetes.io/hostname": k8s-master-centos8.snetsystems.com
       # Comment the following tolerations if Dashboard must not be deployed on master
-      tolerations:
-        - key: node-role.kubernetes.io/control-plane
-          effect: NoSchedule
+      #tolerations:
+      #  - key: node-role.kubernetes.io/control-plane
+      #    effect: NoSchedule
 
 ---
 
@@ -300,11 +303,11 @@ spec:
       serviceAccountName: kubernetes-dashboard
       nodeSelector:
         "kubernetes.io/os": linux
-        "kubernetes.io/hostname": k8s-master-centos8.snetsystems.com
+      #  "kubernetes.io/hostname": k8s-master-centos8.snetsystems.com
       # Comment the following tolerations if Dashboard must not be deployed on master
-      tolerations:
-        - key: node-role.kubernetes.io/control-plane
-          effect: NoSchedule
+      #tolerations:
+      #  - key: node-role.kubernetes.io/control-plane
+      #    effect: NoSchedule
       volumes:
         - name: tmp-volume
           emptyDir: {}
