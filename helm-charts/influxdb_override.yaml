@@ -1,0 +1,11 @@
+persistence:
+  enabled: false
+service:
+  type: ClusterIP
+  ports:
+  - port: 8086
+  externalIPs:
+  - 10.20.2.235
+nodeSelector:
+  kubernetes.io/os: linux
+  kubernetes.io/hostname: test-k8s-worker01-centos8.snetsystems.com

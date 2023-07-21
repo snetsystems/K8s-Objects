@@ -1,0 +1,11 @@
+replicaCount: 3
+persistence:
+  ## @param persistence.enabled If true, use a Persistent Volume Claim. If false, use emptyDir.
+  ##
+  enabled: false
+tolerations:
+  - operator: Exists
+disasterRecovery:
+  cronjob:
+    tolerations:
+      - operator: Exists

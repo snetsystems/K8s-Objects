@@ -1,0 +1,11 @@
+persistence:
+  enabled: false
+service:
+  type: ClusterIP
+  clusterIP: None
+  ports:
+  - port: 9092
+    targetPort: 9092
+  #externalIPs:
+  #- 10.20.2.236
+influxURL: http://influxdb-1688227557:8086
