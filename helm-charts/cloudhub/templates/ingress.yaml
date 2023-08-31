@@ -1,0 +1,48 @@
+{{- if .Values.ingress.enabled -}}
+{{- if .Capabilities.APIVersions.Has "networking.k8s.io/v1/Ingress" }}
+apiVersion: networking.k8s.io/v1
+{{- else }}
+apiVersion: networking.k8s.io/v1beta1
+{{- end }}
+kind: Ingress
+metadata:
+  name: {{ template "cloudhub.fullname" . }}
+  labels:
+    {{- if eq "true" (include "cloudhub.legacyLabels" .) }}
+    app: {{ template "cloudhub.fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    heritage: "{{ .Release.Service }}"
+    {{- end }}
+    {{- include "cloudhub.labels" . | nindent 4 }}
+  annotations:
+{{ toYaml .Values.ingress.annotations | indent 4 }}
+spec:
+{{- if .Values.ingress.tls }}
+  tls:
+    - hosts:
+      - {{ .Values.ingress.hostname | quote }}
+      secretName: {{ .Values.ingress.secretName | default (printf "%s-tls" (include "cloudhub.fullname" .)) }}
+{{- end }}
+{{- if .Values.ingress.className }}
+  ingressClassName: {{ .Values.ingress.className }}
+{{- end }}
+  rules:
+  - host: {{ .Values.ingress.hostname }}
+    http:
+      paths:
+      - path: {{ .Values.ingress.path }}
+{{- if .Capabilities.APIVersions.Has "networking.k8s.io/v1/Ingress" }}
+        pathType: Prefix
+{{- end }}
+        backend:
+{{- if .Capabilities.APIVersions.Has "networking.k8s.io/v1/Ingress" }}
+          service:
+            name: {{ include "cloudhub.fullname" . }}
+            port:
+              number: 80
+{{- else }}
+          serviceName: {{ template "cloudhub.fullname" . }}
+          servicePort: 80
+{{- end }}
+{{- end -}}

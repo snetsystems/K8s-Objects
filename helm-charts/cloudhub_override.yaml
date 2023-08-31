@@ -1,0 +1,45 @@
+image:
+  repository: 'snetsystems/cloudhub'
+  tag: 1.4.5
+service:
+  replicas: 2
+  externalIPs:
+    - 10.20.2.236
+env:
+  LOG_LEVEL: 'debug'
+  INFLUXDB_URL: 'http://influxdb-1688227557.helm-test:8086'
+  KAPACITOR_URL: 'http://kapacitor-1689125282.helm-test:9092'
+  AUTH_DURATION: '0'
+  LOGIN_AUTH_TYPE: 'basic'
+  RETRY_POLICY: 'count:3,delaytime:5,type:delay'
+  # PORT: 443
+  # TLS_CERTIFICATE: /usr/lib/cloudhub/key/cloudhub_self_signed.pem
+  CANNED_PATH: /usr/share/cloudhub/cloudhub-canned
+  PROTOBOARDS_PATH: /usr/share/cloudhub/cloudhub-protoboards
+
+etcd:
+  enabled: true
+  etcd_endpoints: 'http://etcd-1688819715.helm-test.svc.cluster.local:2379'
+  etcd_username: 'root'
+  existingSecret: 'etcd-1688819715'
+  # etcd_password: 'nrVX1NY7Ic'
+
+oauth:
+  enabled: true
+  token_secret: '74c1e9e2450886060b5bf736b935cd0bf960837f'
+
+  github:
+    enabled: true
+    client_id: 'any'
+    client_secret: 'any'
+
+  basic:
+    enabled: true
+    password_policy: '(?=.*[0-9]{1,50})(?=.*[~`!@#$%\\^&*()-+=]{1,50})(?=.*[a-zA-Z]{2,50}).{8,50}$'
+    password_policy_message: 'Enter at least 8 digits using at least 1 number and at least 1 special sentence, and at least 2 English characters.'
+    mail_subject: '(Notifiy) Password is reset'
+    mail_body_message: "Reset OTP for  $user_id is '$user_pw'.<br>Do not forget this!<br>This OTP will use just once when login into cloudhub.<br>Then you must set up the new password"
+
+addon:
+  addon_url: 'salt:http://x.x.x.x:8000/run'
+  addon_tokens: 'salt:ac6cdcf4babb1a82af619446e2fa668bc587b7cb4f2590d9479cb1e8d6a9d503'

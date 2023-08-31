@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "cloudhub.fullname" . }}
+  labels:
+    {{- if eq "true" (include "cloudhub.legacyLabels" .) }}
+    app: {{ template "cloudhub.fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    heritage: "{{ .Release.Service }}"
+    {{- end }}
+    {{- include "cloudhub.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  {{- if .Values.service.ports }}
+  ports:
+{{ toYaml .Values.service.ports | indent 4 }}
+  {{- end }}
+  selector:
+    {{- if eq "true" (include "cloudhub.legacyLabels" .) }}
+    app: {{ template "cloudhub.fullname" . }}
+    {{- end }}
+    {{- include "cloudhub.selectorLabels" . | nindent 4 }}
+  {{- if .Values.service.externalIPs }}
+  externalIPs:
+{{ toYaml .Values.service.externalIPs | indent 4 }}
+  {{- end }}
